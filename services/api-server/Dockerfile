@@ -24,12 +24,7 @@ RUN apt-get -y install unzip
 
 RUN mkdir -p /kannji/
 
-# get the server code from the repo
-ADD https://github.com/kannji/api-server/archive/master.zip /kannji/master.zip
+WORKDIR /kannji/api-server/
 
-# extract the code it
-RUN unzip /kannji/master.zip -d /kannji/
-
-WORKDIR /kannji/api-server-master/
-
-ENTRYPOINT python manage.py migrate && python manage.py runserver 0.0.0.0:80
+# ENTRYPOINT python manage.py migrate && python manage.py runserver 0.0.0.0:80
+ENTRYPOINT sleep infinity

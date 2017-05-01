@@ -16,8 +16,4 @@ RUN rm -v /etc/nginx/nginx.conf
 
 # Copy necessary fiels into container
 # config files
-ADD ./data/nginx.conf   /etc/nginx/
-ADD ./data/snippets/    /etc/nginx/snippets/
-# let's encrypt keys
-ADD ./data/dhparam.pem  /etc/ssl/certs/
-ADD ./data/letsencrypt/ /etc/letsencrypt/
+ADD ./data/nginx.dev.conf   /etc/nginx/nginx.conf

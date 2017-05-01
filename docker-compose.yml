@@ -28,7 +28,10 @@ services:
 
     # which networks is the container connected to
     networks:
-      - user
+      user:
+        # what hostnames this container can be found by in this network
+        aliases:
+          - ${USER_DB_HOSTNAME}
 
   # the api-server
   api-server:
@@ -42,12 +45,15 @@ services:
     # these are the environment variables which will be accessible in the running container
     environment:
       - DEBUG
-      - HOST
+      - HOST=${HOSTNAME}
       - API_DB_DBNAME=${USER_DB_DBNAME}
       - API_DB_USER=${USER_DB_USERNAME}
       - API_DB_PASSWORD=${USER_DB_PASSWORD}
-      - API_DB_HOST=${USER_DB_HOST}
+      - API_DB_HOST=${USER_DB_HOSTNAME}
       - API_SERVER_SECRET_KEY
+
+    volumes:
+      - ${PATH_TO_API_SERVER_CODE}:/kannji/api-server
 
     # which container need to be in what condition for this container to be able to run?
     depends_on:
@@ -58,8 +64,10 @@ services:
     # the api-server needs to handle incoming requests, so it is connected to the nginx- (for incoming requests) and the api-db-network (for accessing the database)
     # note: added security as there is no direct access to the db from outside the host.
     networks:
-      - user
-      - nginx
+      user:
+      nginx:
+        aliases:
+          - ${API_SERVER_HOSTNAME}
 
   # the nginx server
   nginx:
@@ -70,14 +78,18 @@ services:
     # give it this name
     image: kannji_nginx
 
+    # these are the environment variables which will be accessible in the running container
+    environment:
+      - HOSTNAME
+      - API_SERVER_HOSTNAME
+
     # the nginx needs to handle requests from outside the host, so we add these port-mappings.
     # on the host all incoming requests to the port 80 will be forwarded to the containers 80 port.
     # same with the 443 port (https)
     # sceme: <port on container:port on host>
-    # example: "8000:80" will map all requests to the host on port 80 to the container on port 8000
+    # example: "8000:80" will map all requests to the host on port 8000 to the container on port 80
     ports:
-      - "80:80"
-      - "443:443"
+      - "8000:80"
 
     # to be able pass requests to other containers the nginx has an own network.
     # all accessible containers must be in this network.
