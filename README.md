@@ -17,7 +17,7 @@
    - HTTP_PORT \
      The port for everything to run on. Default: 8000.
      
-3. Run 'docker-compose -p kannji up' in the directory where the 'docker-compose.yml' lies to start everything.
+3. Run '```docker-compose -p kannji up```' in the directory where the 'docker-compose.yml' lies to start everything.
 
-4. Run 'docker-compose -p kannji exec api-server python manage.py createsuperuser' to create a django-superuser.
+4. Run '```docker-compose -p kannji exec api-server python manage.py createsuperuser```' to create a django-superuser.
 
