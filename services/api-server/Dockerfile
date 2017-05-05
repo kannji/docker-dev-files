@@ -26,5 +26,4 @@ RUN mkdir -p /kannji/
 
 WORKDIR /kannji/api-server/
 
-# ENTRYPOINT python manage.py migrate && python manage.py runserver 0.0.0.0:80
-ENTRYPOINT sleep infinity
+ENTRYPOINT python manage.py migrate && python manage.py runserver 0.0.0.0:80
