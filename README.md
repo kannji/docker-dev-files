@@ -1,6 +1,6 @@
 # Local development environment
 
-How to use:
+### How to use:
 
 1. Copy the "example.env" file to ".env" so docker-compose can find it.
 2. Fill in the following values in your .env file:
