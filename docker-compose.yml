@@ -53,6 +53,7 @@ services:
       - API_DB_HOST=${USER_DB_HOSTNAME}
       - API_SERVER_SECRET_KEY
 
+    # for development we mount the api-server-code into the container, this way changes made to the code are directly synced with the container
     volumes:
       - ${API_SERVER_CODE_PATH}:/kannji/api-server
 
