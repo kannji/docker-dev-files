@@ -1,29 +1,26 @@
 ############################################################
-# Dockerfile to build the development kannji-api server
-# Based on Python
+# Dockerfile to build the Kannji API server image for local development
 ############################################################
-FROM python
-LABEL maintainer "Jan-Luca Klees and Johannes Heise"
-
-# every thing fresh
-RUN apt-get -y update
-RUN apt-get -y upgrade
+FROM python:alpine
+LABEL maintainer = "Jan-Luca Klees"
 
 # get necessary stuff
-# Django for obvious reasons
-RUN pip install Django
-# Something to connect python to postgres
-RUN pip install psycopg2
-# Some Xpath library to parse the kanjidic2 and jmdict with
-RUN apt-get -y install libxml2-dev libxslt-dev python-dev
-RUN pip install lxml
-# oauth2 authentication for django
-RUN pip install django-oauth-toolkit django-cors-middleware
-# some zip tool for extracting the code from the repo
-RUN apt-get -y install unzip
+# packages
+# TODO add package descriptions
+RUN apk update && apk upgrade && \
+    apk add --virtual build-deps gcc python-dev musl-dev && \
+    apk add postgresql-dev libxml2-dev libxslt-dev
+# pip stuff
+RUN pip install Django psycopg2 lxml django-oauth-toolkit django-cors-middleware django-oauth-toolkit
 
-RUN mkdir -p /kannji/
+# image config
+WORKDIR /kannji/api-server-master/
+EXPOSE 80
 
-WORKDIR /kannji/api-server/
+# entrypoint
+COPY docker-entrypoint.sh /
+RUN chmod +x /docker-entrypoint.sh
+ENTRYPOINT ["/docker-entrypoint.sh"]
 
-ENTRYPOINT python manage.py migrate && python manage.py runserver 0.0.0.0:80
+# command
+CMD ["runserver", "0.0.0.0:80"]
