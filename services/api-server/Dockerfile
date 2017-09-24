@@ -11,7 +11,7 @@ RUN apk update && apk upgrade && \
     apk add --virtual build-deps gcc python-dev musl-dev && \
     apk add postgresql-dev libxml2-dev libxslt-dev
 # pip stuff
-RUN pip install Django psycopg2 lxml django-oauth-toolkit django-cors-middleware django-oauth-toolkit
+RUN pip install Django psycopg2 lxml django-oauth-toolkit django-cors-middleware django-oauth-toolkit djangorestframework
 
 # image config
 WORKDIR /kannji/api-server-master/
